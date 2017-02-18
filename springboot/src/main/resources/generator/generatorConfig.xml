@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="generator/generator.properties"/>
+
+    <context id="jim-product" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <!--<property name="autoDelimitKeywords" value="true"/>-->
+
+        <!--<plugin type="org.mybatis.generator.plugins.SerializablePlugin">-->
+        <!--</plugin>-->
+
+        <plugin type="${mapper.plugin}">
+            <property name="mappers" value="${mapper.Mapper}"/>
+        </plugin>
+
+        <jdbcConnection driverClass="${dbcp.driver}"
+                        connectionURL="${dbcp.url}"
+                        userId="${dbcp.username}"
+                        password="${dbcp.password}">
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="${targetModelPackage}.entity"
+                            targetProject="${targetJavaProject}"/>
+
+        <sqlMapGenerator targetPackage="mapper" targetProject="${targetResourcesProject}"/>
+
+        <javaClientGenerator targetPackage="${targetMapperPackage}.mapper"
+                             targetProject="${targetJavaProject}"
+                             type="XMLMAPPER">
+        </javaClientGenerator>
+
+
+
+        <table tableName="product">
+
+        </table>
+
+
+
+    </context>
+
+
+</generatorConfiguration>
