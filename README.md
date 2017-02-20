@@ -1,6 +1,8 @@
 # jim-framework
 分享部分工作中的内容，包含一些抽取出来的公共组件以及在spring boot下常用组件的应用。
 >代码会在后续陆续更新
+
+
 ## 公共组件
 
 ### RPC
@@ -27,6 +29,8 @@
 
 ### RabbitMQ
 + [从头开始搭建一个Spring boot+RabbitMQ环境](http://www.cnblogs.com/ASPNET2008/p/6414145.html)
+
+
 ### Spring Cache+Redis
 
 ### Elasticsearch
