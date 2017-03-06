@@ -1,5 +1,6 @@
 package com.jim.framework.web.config;
 
+import com.jim.framework.cache.helper.ApplicationContextHelper;
 import com.jim.framework.web.filter.TimeFilter;
 import com.jim.framework.web.interceptor.PermissionInterceptor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -27,6 +28,11 @@ public class WebApplicationConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(new PermissionInterceptor()).addPathPatterns("/student/**");
+    }
+
+    @Bean
+    public ApplicationContextHelper initApplicationContextHelper(){
+        return new ApplicationContextHelper();
     }
 
 }

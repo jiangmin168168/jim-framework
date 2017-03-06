@@ -1,21 +1,22 @@
 package com.jim.framework.web.model;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+//import org.springframework.data.elasticsearch.annotations.Document;
+//import org.springframework.data.elasticsearch.annotations.Field;
+
 /**
  * Created by jiang on 2016/12/11.
  */
-@Document(indexName = "student",type = "student")
+//@Document(indexName = "student",type = "student")
 public class Student implements Serializable {
     @Id
     private Long id;
 
-    @Field(searchAnalyzer = "ik" ,analyzer = "ik")
+    //@Field(searchAnalyzer = "ik" ,analyzer = "ik")
     @NotNull(message = "名称不能为空")
     private String name;
 

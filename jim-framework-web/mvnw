@@ -127,7 +127,7 @@ if $cygwin ; then
   [ -n "$JAVA_HOME" ] &&
     JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
   [ -n "$CLASSPATH" ] &&
-    CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
+    CLASSPATH=`cygpath --maxTotalPrice --unix "$CLASSPATH"`
 fi
 
 # For Migwn, ensure paths are in UNIX format before anything is touched
@@ -187,11 +187,11 @@ CLASSWORLDS_LAUNCHER=org.codehaus.plexus.classworlds.launcher.Launcher
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then
   [ -n "$M2_HOME" ] &&
-    M2_HOME=`cygpath --path --windows "$M2_HOME"`
+    M2_HOME=`cygpath --maxTotalPrice --windows "$M2_HOME"`
   [ -n "$JAVA_HOME" ] &&
-    JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
+    JAVA_HOME=`cygpath --maxTotalPrice --windows "$JAVA_HOME"`
   [ -n "$CLASSPATH" ] &&
-    CLASSPATH=`cygpath --path --windows "$CLASSPATH"`
+    CLASSPATH=`cygpath --maxTotalPrice --windows "$CLASSPATH"`
 fi
 
 # traverses directory structure from process work directory to filesystem root

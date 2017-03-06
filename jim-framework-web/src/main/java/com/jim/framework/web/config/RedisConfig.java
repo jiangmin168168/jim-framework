@@ -3,15 +3,20 @@ package com.jim.framework.web.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import com.jim.framework.cache.redis.CustomizedRedisCacheManager;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.*;
-import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.cache.interceptor.KeyGenerator;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * redis相关配置，可以指定序列化方式
@@ -19,13 +24,34 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
  */
 @Configuration
 @EnableCaching
-//@EnableLoadTimeWeaving
 public class RedisConfig extends CachingConfigurerSupport {
+
+    @Bean
+    public KeyGenerator keyGenerator(){
+        return new KeyGenerator() {
+            @Override
+            public Object generate(Object target, Method method, Object... params) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(target.getClass().getName());
+                sb.append(method.getName());
+                for (Object obj : params) {
+                    sb.append(obj.toString());
+                }
+                return sb.toString();
+            }
+        };
+
+    }
 
     @Bean
     public CacheManager cacheManager(
             @SuppressWarnings("rawtypes") RedisTemplate redisTemplate) {
-        return new RedisCacheManager(redisTemplate);
+        CustomizedRedisCacheManager cacheManager= new CustomizedRedisCacheManager(redisTemplate);
+        cacheManager.setDefaultExpiration(60);
+//        Map<String,Long> expiresMap=new HashMap<>();
+//        expiresMap.put("Product",5L);
+//        cacheManager.setExpires(expiresMap);
+        return cacheManager;
     }
 
     @Bean
