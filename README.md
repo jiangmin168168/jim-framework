@@ -17,6 +17,7 @@
 + 基本redis的锁实现
 
 ## Spring boot实践
+
 ### WEB
 + Filter
 + Interceptor
@@ -32,9 +33,11 @@
 
 
 ### Spring Cache+Redis
++ [Spring Cache扩展：注解失效时间+主动刷新缓存](http://www.cnblogs.com/ASPNET2008/p/6511500.html)
 
 ### Elasticsearch
 主要是spring.data.elasticsearch应用，JPA的操作很简单粗爆。
+
 ## 面向对象 （未同步代码）
 工作中的一些设计实践，合适不合适仁者见仁吧。
 + [状态模式](http://www.cnblogs.com/ASPNET2008/p/6010653.html)
