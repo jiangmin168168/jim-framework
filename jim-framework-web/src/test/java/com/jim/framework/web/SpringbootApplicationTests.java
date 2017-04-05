@@ -1,4 +1,4 @@
-package com.jim;
+package com.jim.framework.web;
 
 import org.junit.Assert;
 import org.junit.Test;

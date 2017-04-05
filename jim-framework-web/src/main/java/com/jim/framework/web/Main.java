@@ -1,12 +1,18 @@
 package com.jim.framework.web;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import java.util.*;
 
-//@SpringBootApplication
+@SpringBootApplication
 public class Main {
 
     public static void main(String[] args) {
 
+        testGraph();
+    }
+
+    static void testGraph(){
         Scanner scan = new Scanner(System.in);
 
         //System.out.println("请输入城市数量以及航班数量");
@@ -48,8 +54,9 @@ public class Main {
             }
         }
         System.out.println(maxTotalPrice);
-
     }
+
+
 
     /**
      * 根据控制台输出的信息初始化航班数据
@@ -211,4 +218,7 @@ class Graph {
         //System.out.println("search end");
     }
 }
+
+
+
 

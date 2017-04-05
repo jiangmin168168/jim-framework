@@ -1,0 +1,17 @@
+#server:
+#  port: 1111
+#spring:
+##  cloud:
+##    zookeeper:
+##      connect-string: 192.168.21.128:2181
+##      discovery:
+##        instance-host: 127.0.0.1
+##        instance-port: ${server.port}
+#  application:
+#    name: jim-cloud-server
+#eureka:
+#  client:
+#    register-with-eureka: false
+#    fetch-registry: false
+#    service-url:
+#      default-zone:http://localhost:${server.port}/eureka/
