@@ -30,8 +30,5 @@ public class EnableTraceAutoConfiguration {
     @PostConstruct
     public void init() throws Exception {
         TraceContext.init(this.traceConfig);
-
     }
-
-
 }

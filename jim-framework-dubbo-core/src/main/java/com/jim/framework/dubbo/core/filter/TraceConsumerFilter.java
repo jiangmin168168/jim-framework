@@ -37,7 +37,14 @@ public class TraceConsumerFilter implements Filter {
         Long traceId=null;
         long id = IdUtils.get();
         consumerSpan.setId(id);
-        traceId=null==TraceContext.getTraceId()?id:TraceContext.getTraceId();
+        if(null==TraceContext.getTraceId()){
+            TraceContext.start();
+            traceId=id;
+        }
+        else {
+            traceId=TraceContext.getTraceId();
+        }
+
         consumerSpan.setTrace_id(traceId);
         consumerSpan.setParent_id(TraceContext.getSpanId());
         consumerSpan.setName(TraceContext.getTraceConfig().getApplicationName());
