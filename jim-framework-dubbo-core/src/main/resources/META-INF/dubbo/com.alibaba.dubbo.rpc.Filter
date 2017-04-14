@@ -1,0 +1,2 @@
+traceProviderFilter=com.jim.framework.dubbo.core.filter.TraceProviderFilter
+traceConsumerFilter=com.jim.framework.dubbo.core.filter.TraceConsumerFilter

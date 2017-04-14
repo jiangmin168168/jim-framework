@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /*
-* 版权所属：东软望海科技有限公司
+* 产品服务hystrix服务
 * 作者：姜敏
 * 版本：V1.0
 * 创建日期：2017/4/1

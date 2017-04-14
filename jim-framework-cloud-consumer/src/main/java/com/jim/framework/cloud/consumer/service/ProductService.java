@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /*
-* 版权所属：东软望海科技有限公司
+* 产品服务
 * 作者：姜敏
 * 版本：V1.0
 * 创建日期：2017/4/1

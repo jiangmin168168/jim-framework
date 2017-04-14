@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+
+  <modelGroup namespace="com.viewhigh.model">
+    <model id="Product" type="com.viewhigh.model.Product">
+      <property type="java.lang.Long" name="id" />
+      <property type="java.lang.String" name="productName" />
+    </model>
+  </modelGroup>
+
+  <serviceGroup namespace="com.viewhigh.service">
+    <service id="ProductService" type="com.viewhigh.service.ProductService" version="1.0" runType="local">
+      <method id="getProductById" resultType="com.viewhigh.model.Product">
+        <parameter id="id" type="java.lang.Long"></parameter>
+      </method>
+    </service>
+  </serviceGroup>
+
+  <serviceImplGroup namespace="com.viewhigh.service.impl">
+    <serviceImpl id="ProductServiceImpl" type="com.viewhigh.service.impl.ProductServiceImpl" serviceId="ProductService">
+    </serviceImpl>
+  </serviceImplGroup>
+
+  <unitTestGroup namespace="com.viewhigh.test">
+    <unitTest id="ProductServiceImplTest" type="com.viewhigh.test.service.ProductServiceImpleTest" serviceImplId="ProductServiceImpl">
+      <method id="getProductById"></method>
+    </unitTest>
+  </unitTestGroup>
+
+</config>

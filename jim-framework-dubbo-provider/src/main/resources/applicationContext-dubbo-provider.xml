@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+						   http://www.springframework.org/schema/beans/spring-beans.xsd
+						   http://code.alibabatech.com/schema/dubbo 
+						   http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<dubbo:annotation package="com.jim.framework.dubbo.provider.service"/>
+
+	<dubbo:application name="${spring.application.name}" owner="jim" logger="slf4j"/>
+	<dubbo:provider filter="traceProviderFilter" />
+
+	<dubbo:protocol name="dubbo" accesslog="true" port="${server.port}"/>
+
+	<dubbo:registry address="N/A" />
+	<dubbo:service interface="com.jim.framework.dubbo.core.service.ProductService" ref="productService"/>
+
+	<bean id="productService"
+		  class="com.jim.framework.dubbo.provider.service.ProductServiceImpl">
+	</bean>
+
+
+</beans>
