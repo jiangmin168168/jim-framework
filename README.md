@@ -11,10 +11,11 @@
 + [变通实现微服务的per request以提高IO效率2](http://www.cnblogs.com/ASPNET2008/p/6107034.html)
 + [变通实现微服务的per request以提高IO效率3](http://www.cnblogs.com/ASPNET2008/p/6125795.html)
 
+#### [分布式调用链追踪:dubbo+zipkin](http://www.cnblogs.com/ASPNET2008/p/6709900.html)
+
+
 ### [基于注解的锁](http://www.cnblogs.com/ASPNET2008/p/6308868.html) 
 
-+ 抽象注解
-+ 基本redis的锁实现
 
 ## Spring boot实践
 
