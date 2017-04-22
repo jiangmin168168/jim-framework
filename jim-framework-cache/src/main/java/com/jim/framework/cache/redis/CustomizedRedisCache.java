@@ -39,7 +39,7 @@ public class CustomizedRedisCache extends RedisCache {
         this.preloadSecondTime=preloadSecondTime;
     }
 
-    public ValueWrapper get(Object key) {
+    public ValueWrapper get(final Object key) {
 
         ValueWrapper valueWrapper= super.get(key);
         if(null!=valueWrapper){

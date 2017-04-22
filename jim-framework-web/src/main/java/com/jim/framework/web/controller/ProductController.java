@@ -1,9 +1,11 @@
 package com.jim.framework.web.controller;
 
+import com.jim.framework.configcenter.factory.ConfigCenterFactory;
 import com.jim.framework.web.common.ValueResult;
 import com.jim.framework.web.dao.generated.entity.Product;
 import com.jim.framework.web.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +22,16 @@ public class ProductController extends BaseController {
     @Autowired
     private ProductService productService;
 
+    @Value("${mq.rabbit.host}")
+    private String rabbitHost;
+
+
+    @RequestMapping("/config")
+    public ValueResult<String> config(){
+        String testConfig= ConfigCenterFactory.getInstance().getConfig().get("foo");
+        return this.returnValueSuccess(testConfig+this.rabbitHost);
+    }
+
     @RequestMapping("/{productId}")
     public ValueResult<Product> getById(@PathVariable final long productId) throws UnknownHostException {
         Product result= this.productService.getById(productId);
@@ -34,7 +46,6 @@ public class ProductController extends BaseController {
         product.setName("jim-product-"+productId);
         this.productService.save(product);
         return this.returnValueSuccess("success");
-
     }
 
 }

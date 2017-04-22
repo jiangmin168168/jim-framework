@@ -64,6 +64,12 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.jim.framework</groupId>
+			<artifactId>configcenter</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 		<!--aop-->
 		<!--<dependency>-->
 			<!--<groupId>org.aspectj</groupId>-->

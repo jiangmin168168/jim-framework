@@ -10,12 +10,11 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Created by jiang on 2017/2/18.
  */
-@Configuration
+//@Configuration
 public class RabbitMQConfig {
 
     protected Logger logger = LoggerFactory.getLogger(getClass().getName());
