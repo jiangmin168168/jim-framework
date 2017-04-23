@@ -5,6 +5,10 @@
 
 ## 公共组件
 
+### 统一配置中心
++ [统一配置中心1](http://www.cnblogs.com/ASPNET2008/p/5166922.html)
++ [统一配置中心2](http://www.cnblogs.com/ASPNET2008/p/6752131.html)
+
 ### RPC
 #### Dubbo环境下基本请求级的缓存 （未同步代码）
 + [变通实现微服务的per request以提高IO效率1](http://www.cnblogs.com/ASPNET2008/p/6103507.html)

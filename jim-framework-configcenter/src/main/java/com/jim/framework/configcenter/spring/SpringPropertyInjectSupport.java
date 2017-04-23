@@ -23,7 +23,7 @@ public class SpringPropertyInjectSupport {
             return;
         }
         ConfigCenterFactory.getInstance().setSystemNameSpace(this.configNameSpaces);
-        ConfigCenterService cc = ConfigCenterFactory.getInstance().getConfig(this.configNameSpaces);
+        ConfigCenterService cc = ConfigCenterFactory.getInstance().getConfigCenterService(this.configNameSpaces);
         Map<String, Object> config = cc.getConfig();
         setSystemProperys(cc, config);
 

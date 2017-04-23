@@ -78,7 +78,7 @@ public class ConfigCenterFactory {
         return this.configCenterCache.get(key);
     }
 
-    public ConfigCenterService getConfig(final String nameSpace) {
+    public ConfigCenterService getConfigCenterService(final String nameSpace) {
         return getConfig(getDefaultZkurl(), nameSpace);
     }
 
