@@ -25,6 +25,7 @@
 
 		<protostuff.version>1.5.2</protostuff.version>
 		<slf4j.version>1.7.5</slf4j.version>
+		<guava.version>19.0</guava.version>
 	</properties>
 
 	<dependencies>
@@ -62,6 +63,12 @@
 			<groupId>io.protostuff</groupId>
 			<artifactId>protostuff-runtime</artifactId>
 			<version>${protostuff.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
 		</dependency>
 	</dependencies>
 

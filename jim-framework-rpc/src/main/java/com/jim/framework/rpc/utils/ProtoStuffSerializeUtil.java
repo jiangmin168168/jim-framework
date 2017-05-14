@@ -1,5 +1,6 @@
 package com.jim.framework.rpc.utils;
 
+import com.jim.framework.rpc.exception.RpcException;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
@@ -35,7 +36,7 @@ public class ProtoStuffSerializeUtil {
             ProtostuffIOUtil.writeListTo(byteArrayOutputStream,objs, schema, buffer);
             protostuff=byteArrayOutputStream.toByteArray();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RpcException(e);
         } finally {
             buffer.clear();
             try {
@@ -65,7 +66,7 @@ public class ProtoStuffSerializeUtil {
 
     public static <T> byte[] serialize(T obj) {
         if (obj == null) {
-            throw new RuntimeException("ProtoStuffSerialize.serialize: obj is null");
+            throw new RpcException("ProtoStuffSerialize.serialize: obj is null");
         }
         if(obj instanceof List){
             return serializeList((List)obj);
@@ -92,7 +93,7 @@ public class ProtoStuffSerializeUtil {
         try {
             instance = beanClass.newInstance();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RpcException(e);
         }
         Schema<T> schema = RuntimeSchema.getSchema(beanClass);
         ProtostuffIOUtil.mergeFrom(bytes, instance, schema);

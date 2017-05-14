@@ -2,12 +2,13 @@ package com.jim.framework.rpc.consumer.config;
 
 import com.jim.framework.rpc.beans.BeanPostPrcessorReference;
 import com.jim.framework.rpc.config.ReferenceConfig;
+import com.jim.framework.rpc.utils.ApplicationContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-@ComponentScan("com.jim.framework.rpc.consumer")
+@ComponentScan(basePackages = {"com.jim.framework.rpc.consumer","com.jim.framework.rpc"})
 @Configuration
 public class ConsumerConfiguration {
 
@@ -23,6 +24,11 @@ public class ConsumerConfiguration {
         referenceConfig.setHost("127.0.0.1");
         referenceConfig.setPort(9988);
         return referenceConfig;
+    }
+
+    @Bean
+    public ApplicationContextUtils applicationContextUtils(){
+        return new ApplicationContextUtils();
     }
 
 }

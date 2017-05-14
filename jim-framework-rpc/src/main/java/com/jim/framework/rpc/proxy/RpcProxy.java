@@ -1,9 +1,11 @@
 package com.jim.framework.rpc.proxy;
 
-import com.jim.framework.rpc.client.RpcClientHandler;
 import com.jim.framework.rpc.client.RpcClientInitializer;
+import com.jim.framework.rpc.client.RpcClientInvoker;
+import com.jim.framework.rpc.common.RpcInvoker;
 import com.jim.framework.rpc.common.RpcRequest;
 import com.jim.framework.rpc.config.ReferenceConfig;
+import com.jim.framework.rpc.exception.RpcException;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -28,7 +30,7 @@ public class RpcProxy <T> implements InvocationHandler {
     private Condition connected = lock.newCondition();
     private EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
 
-    private CopyOnWriteArrayList<RpcClientHandler> connectedHandlers = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<RpcClientInvoker> connectedHandlers = new CopyOnWriteArrayList<>();
 
     private ReferenceConfig referenceConfig;
 
@@ -39,15 +41,15 @@ public class RpcProxy <T> implements InvocationHandler {
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
                 for (int i = 0; i < connectedHandlers.size(); i++) {
-                    RpcClientHandler connectedServerHandler = connectedHandlers.get(i);
+                    RpcClientInvoker connectedServerHandler = connectedHandlers.get(i);
                     connectedServerHandler.close();
                 }
                 RpcProxy.this.eventLoopGroup.shutdownGracefully();
             }
-        }, "RpcShutdownHook-RpcClientHandler"));
+        }, "RpcShutdownHook-RpcClientInvoker"));
     }
 
-    private void addHandler(RpcClientHandler handler) {
+    private void addHandler(RpcClientInvoker handler) {
         connectedHandlers.add(handler);
         signalAvailableHandler();
     }
@@ -71,8 +73,8 @@ public class RpcProxy <T> implements InvocationHandler {
         }
     }
 
-    private RpcClientHandler getHandler() {
-        CopyOnWriteArrayList<RpcClientHandler> handlers = (CopyOnWriteArrayList<RpcClientHandler>) this.connectedHandlers.clone();
+    private RpcClientInvoker getInvoker() {
+        CopyOnWriteArrayList<RpcClientInvoker> handlers = (CopyOnWriteArrayList<RpcClientInvoker>) this.connectedHandlers.clone();
         int size = handlers.size();
 
         while (size <= 0) {
@@ -88,18 +90,18 @@ public class RpcProxy <T> implements InvocationHandler {
                     @Override
                     public void operationComplete(final ChannelFuture channelFuture) throws Exception {
                         if (channelFuture.isSuccess()) {
-                            RpcClientHandler handler = channelFuture.channel().pipeline().get(RpcClientHandler.class);
+                            RpcClientInvoker handler = channelFuture.channel().pipeline().get(RpcClientInvoker.class);
                             addHandler(handler);
                         }
                     }
                 });
                 boolean available = waitingForHandler();
                 if (available) {
-                    handlers = (CopyOnWriteArrayList<RpcClientHandler>) this.connectedHandlers.clone();
+                    handlers = (CopyOnWriteArrayList<RpcClientInvoker>) this.connectedHandlers.clone();
                     size = handlers.size();
                 }
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                throw new RpcException(e);
             }
         }
         return handlers.get(0);
@@ -115,8 +117,12 @@ public class RpcProxy <T> implements InvocationHandler {
         request.setParameterTypes(method.getParameterTypes());
         request.setParameters(args);
 
-        RpcClientHandler handler = this.getHandler();
-        ResponseFuture responseFuture = handler.sendRequest(request);
-        return responseFuture.get();
+        RpcClientInvoker invoker = this.getInvoker();
+        invoker.setRpcRequest(request);
+
+        RpcInvoker rpcInvoker=invoker.buildInvokerChain(invoker);
+        ResponseFuture response=(ResponseFuture) rpcInvoker.invoke(invoker.buildRpcInvocation(request));
+
+        return response.get();
     }
 }

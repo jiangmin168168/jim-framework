@@ -14,6 +14,7 @@
 + 针对版本1同步调用存在的问题，参考了dubbo的思路
 + 针对版本2采用AbstractQueuedSynchronizer，感觉有些复杂，采用Lock替代
 + 针对程序关闭时资源的回收，参考了dubbo的思路，采用addShutdownHook注册回收函数
++ 增加了filter机制
 + 调整了目录结构
 
 

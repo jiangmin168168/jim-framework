@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan("com.jim.framework.rpc.provider")
+@ComponentScan(basePackages = {"com.jim.framework.rpc.provider","com.jim.framework.rpc"})
 public class JimRpcProviderApplication {
 
 	public static void main(String[] args) throws InterruptedException {

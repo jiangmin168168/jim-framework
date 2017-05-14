@@ -1,6 +1,7 @@
 package com.jim.framework.rpc.server;
 
 import com.jim.framework.rpc.config.ServiceConfig;
+import com.jim.framework.rpc.exception.RpcException;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -38,10 +39,8 @@ public class RpcServer {
                 ChannelFuture channelFuture = bootstrap.bind(serviceConfig.getHost(),serviceConfig.getPort()).sync();
                 channelFuture.channel().closeFuture().sync();
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                throw new RpcException(e);
             }
-
-
         }
         finally {
             bossGroup.shutdownGracefully();

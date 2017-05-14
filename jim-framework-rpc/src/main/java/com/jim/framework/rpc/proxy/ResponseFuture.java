@@ -2,6 +2,7 @@ package com.jim.framework.rpc.proxy;
 
 import com.jim.framework.rpc.common.RpcRequest;
 import com.jim.framework.rpc.common.RpcResponse;
+import com.jim.framework.rpc.exception.RpcException;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -26,7 +27,7 @@ public class ResponseFuture implements Future<Object> {
         if(isDone()){
             return this.response.getResult();
         }
-        throw new RuntimeException("action is not completed");
+        throw new RpcException("action is not completed");
     }
 
     @Override
@@ -36,7 +37,7 @@ public class ResponseFuture implements Future<Object> {
 
     @Override
     public Object get() throws InterruptedException, ExecutionException {
-        return this.get(6000,TimeUnit.MICROSECONDS);
+        return this.get(10000,TimeUnit.MICROSECONDS);
     }
 
     @Override
@@ -53,7 +54,7 @@ public class ResponseFuture implements Future<Object> {
                 }
             }
             catch (InterruptedException ex){
-                throw new RuntimeException(ex);
+                throw new RpcException(ex);
             }
             finally {
                 this.lock.unlock();
