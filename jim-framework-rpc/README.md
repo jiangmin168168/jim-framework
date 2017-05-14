@@ -38,7 +38,6 @@ public class ProductServiceImpl implements ProductService,CommentService
 + 限流/熔断
 + 服务版本
 + 客户端多线程
-+ 过滤器
 + ......
 
 
