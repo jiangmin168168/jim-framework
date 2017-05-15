@@ -5,6 +5,7 @@ import com.jim.framework.rpc.client.RpcClientInvoker;
 import com.jim.framework.rpc.common.RpcInvoker;
 import com.jim.framework.rpc.common.RpcRequest;
 import com.jim.framework.rpc.config.ReferenceConfig;
+import com.jim.framework.rpc.context.RpcContext;
 import com.jim.framework.rpc.exception.RpcException;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -26,6 +27,8 @@ public class RpcProxy <T> implements InvocationHandler {
 
     private Class<T> clazz;
 
+    private boolean isSync=true;
+
     private ReentrantLock lock = new ReentrantLock();
     private Condition connected = lock.newCondition();
     private EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
@@ -34,9 +37,10 @@ public class RpcProxy <T> implements InvocationHandler {
 
     private ReferenceConfig referenceConfig;
 
-    public RpcProxy(Class<T> clazz,ReferenceConfig referenceConfig) {
+    public RpcProxy(Class<T> clazz,ReferenceConfig referenceConfig,boolean isSync) {
         this.clazz = clazz;
         this.referenceConfig=referenceConfig;
+        this.isSync=isSync;
 
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
@@ -123,6 +127,12 @@ public class RpcProxy <T> implements InvocationHandler {
         RpcInvoker rpcInvoker=invoker.buildInvokerChain(invoker);
         ResponseFuture response=(ResponseFuture) rpcInvoker.invoke(invoker.buildRpcInvocation(request));
 
-        return response.get();
+        if(isSync){
+            return response.get();
+        }
+        else {
+            RpcContext.getContext().setResponseFuture(response);
+            return null;
+        }
     }
 }

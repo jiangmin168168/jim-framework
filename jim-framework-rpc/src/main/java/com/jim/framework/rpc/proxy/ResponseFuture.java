@@ -4,7 +4,6 @@ import com.jim.framework.rpc.common.RpcRequest;
 import com.jim.framework.rpc.common.RpcResponse;
 import com.jim.framework.rpc.exception.RpcException;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -36,7 +35,7 @@ public class ResponseFuture implements Future<Object> {
     }
 
     @Override
-    public Object get() throws InterruptedException, ExecutionException {
+    public Object get()  {
         return this.get(10000,TimeUnit.MICROSECONDS);
     }
 
