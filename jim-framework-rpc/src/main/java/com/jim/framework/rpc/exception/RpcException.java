@@ -10,4 +10,7 @@ public class RpcException extends RuntimeException {
     public RpcException(Exception ex){
         super(ex);
     }
+    public RpcException(){
+        super("rpc exception");
+    }
 }

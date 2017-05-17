@@ -18,6 +18,7 @@
 					 url="dubbo://127.0.0.1:${dubbo.provider.port}/com.jim.framework.dubbo.core.service.ProductService"
 					 interface="com.jim.framework.dubbo.core.service.ProductService"
 					 id="productService">
+		<dubbo:method name="getByid" async="true"></dubbo:method>
 
 	</dubbo:reference>
 

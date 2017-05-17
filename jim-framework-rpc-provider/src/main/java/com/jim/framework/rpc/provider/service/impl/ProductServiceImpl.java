@@ -10,6 +10,11 @@ import com.jim.framework.rpc.api.service.ProductService;
 public class ProductServiceImpl implements ProductService,CommentService {
     @Override
     public Product getById(Long id) {
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Product product=new Product();
         product.setId(id);
         product.setName(id+"name");

@@ -2,6 +2,9 @@ package com.jim.framework.rpc.context;
 
 import com.jim.framework.rpc.proxy.ResponseFuture;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by jiang on 2017/5/15.
  */
@@ -13,7 +16,10 @@ public class RpcContext {
         return responseFuture;
     }
 
+    private Map<String,ResponseFuture> responseFutureMap=new HashMap<>();
+
     public void setResponseFuture(ResponseFuture responseFuture) {
+        System.out.println("current thread id:"+Thread.currentThread().getId());
         this.responseFuture = responseFuture;
     }
 
@@ -30,5 +36,8 @@ public class RpcContext {
 
     public static void removeContext() {
         rpcContextThreadLocal.remove();
+    }
+
+    private RpcContext() {
     }
 }
