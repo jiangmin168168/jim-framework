@@ -21,8 +21,8 @@ public class ConsumerConfiguration {
     @Bean
     public ReferenceConfig referenceConfig(){
         ReferenceConfig referenceConfig=new ReferenceConfig();
-        referenceConfig.setHost("127.0.0.1");
-        referenceConfig.setPort(9988);
+        referenceConfig.setRegistryHost("192.168.21.128");
+        referenceConfig.setRegistryPort(8500);
         return referenceConfig;
     }
 

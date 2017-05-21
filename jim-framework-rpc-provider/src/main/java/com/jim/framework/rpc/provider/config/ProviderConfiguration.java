@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+//@ComponentScan(basePackages = {"com.jim.framework.rpc.provider","com.jim.framework.rpc"})
 public class ProviderConfiguration {
 
     private final static Logger logger = LoggerFactory.getLogger(ProviderConfiguration.class);
@@ -21,6 +22,8 @@ public class ProviderConfiguration {
         ServiceConfig serviceConfig=new ServiceConfig();
         serviceConfig.setHost("127.0.0.1");
         serviceConfig.setPort(9988);
+        serviceConfig.setRegistryHost("192.168.21.128");
+        serviceConfig.setRegistryPort(8500);
         RpcServer rpcServer= new RpcServer(serviceConfig,rpcServerInitializer);
         logger.info("service is started");
         return rpcServer;

@@ -1,10 +1,10 @@
-package com.jim.framework.rpc.config;
+package com.jim.framework.rpc.common;
 
 /**
-消费端配置
- * Created by jiang on 2017/5/10.
+ * Created by jiang on 2017/5/19.
  */
-public class ReferenceConfig {
+public class RpcURL {
+
     private String host;
     private int port;
 
@@ -27,8 +27,6 @@ public class ReferenceConfig {
         this.registryPort = registryPort;
     }
 
-    protected long connectTimeoutMillis = 6000;
-
     public String getHost() {
         return host;
     }
@@ -43,13 +41,5 @@ public class ReferenceConfig {
 
     public void setPort(int port) {
         this.port = port;
-    }
-
-    public long getConnectTimeoutMillis() {
-        return connectTimeoutMillis;
-    }
-
-    public void setConnectTimeoutMillis(long connectTimeoutMillis) {
-        this.connectTimeoutMillis = connectTimeoutMillis;
     }
 }

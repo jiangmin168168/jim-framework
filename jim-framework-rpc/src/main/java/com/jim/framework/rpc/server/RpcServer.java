@@ -1,7 +1,10 @@
 package com.jim.framework.rpc.server;
 
+import com.jim.framework.rpc.common.RpcURL;
 import com.jim.framework.rpc.config.ServiceConfig;
 import com.jim.framework.rpc.exception.RpcException;
+import com.jim.framework.rpc.registry.ConsulRegistryService;
+import com.jim.framework.rpc.registry.RegistryService;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -37,7 +40,16 @@ public class RpcServer {
 
             try {
                 ChannelFuture channelFuture = bootstrap.bind(serviceConfig.getHost(),serviceConfig.getPort()).sync();
+                RpcURL url=new RpcURL();
+                url.setHost(serviceConfig.getHost());
+                url.setPort(serviceConfig.getPort());
+                url.setRegistryHost(serviceConfig.getRegistryHost());
+                url.setRegistryPort(serviceConfig.getRegistryPort());
+                RegistryService registryService=new ConsulRegistryService();
+                registryService.register(url);
                 channelFuture.channel().closeFuture().sync();
+
+
             } catch (InterruptedException e) {
                 throw new RpcException(e);
             }

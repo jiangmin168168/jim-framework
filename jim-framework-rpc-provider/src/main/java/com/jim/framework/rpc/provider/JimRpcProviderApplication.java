@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+//@ContextConfiguration(classes = {ProviderConfiguration.class})
 @ComponentScan(basePackages = {"com.jim.framework.rpc.provider","com.jim.framework.rpc"})
 public class JimRpcProviderApplication {
 

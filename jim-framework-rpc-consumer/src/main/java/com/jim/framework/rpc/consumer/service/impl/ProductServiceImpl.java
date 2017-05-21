@@ -66,7 +66,7 @@ public class ProductServiceImpl implements ProductCommentService {
             }
         });
 
-        //return product;
-        return null;
+        return product;
+        //return null;
     }
 }

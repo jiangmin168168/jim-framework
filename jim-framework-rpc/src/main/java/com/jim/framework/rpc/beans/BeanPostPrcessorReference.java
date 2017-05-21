@@ -3,6 +3,8 @@ package com.jim.framework.rpc.beans;
 import com.jim.framework.rpc.client.RpcClient;
 import com.jim.framework.rpc.client.RpcReference;
 import com.jim.framework.rpc.config.ReferenceConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -20,6 +22,8 @@ import java.lang.reflect.Modifier;
  */
 public class BeanPostPrcessorReference implements BeanPostProcessor {
 
+    private static final Logger logger = LoggerFactory.getLogger(BeanPostPrcessorReference.class);
+
     private ReferenceConfig referenceConfig;
 
     private RpcClient rpcClient;
@@ -27,14 +31,14 @@ public class BeanPostPrcessorReference implements BeanPostProcessor {
     public BeanPostPrcessorReference(ReferenceConfig referenceConfig){
         this.referenceConfig=referenceConfig;
         rpcClient=new RpcClient(this.referenceConfig);
+        logger.info("BeanPostPrcessorReference construct end");
     }
 
     private boolean isProxyBean(Object bean) {
         return AopUtils.isAopProxy(bean);
     }
 
-    @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+    public Object initRpcReferenceBean(Object bean, String beanName){
         Class<?> clazz = bean.getClass();
         if(isProxyBean(bean)){
             clazz = AopUtils.getTargetClass(bean);
@@ -78,6 +82,11 @@ public class BeanPostPrcessorReference implements BeanPostProcessor {
             }
         }
         return bean;
+    }
+
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        return this.initRpcReferenceBean(bean,beanName);
     }
 
     @Override
