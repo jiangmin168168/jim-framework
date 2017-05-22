@@ -22,7 +22,7 @@ public class ProviderConfiguration {
         ServiceConfig serviceConfig=new ServiceConfig();
         serviceConfig.setHost("127.0.0.1");
         serviceConfig.setPort(9988);
-        serviceConfig.setRegistryHost("192.168.21.128");
+        serviceConfig.setRegistryHost("127.0.0.1");
         serviceConfig.setRegistryPort(8500);
         RpcServer rpcServer= new RpcServer(serviceConfig,rpcServerInitializer);
         logger.info("service is started");

@@ -2,6 +2,8 @@ package com.jim.framework.rpc.client;
 
 import com.jim.framework.rpc.common.RpcURL;
 import com.jim.framework.rpc.config.ReferenceConfig;
+import com.jim.framework.rpc.loadbalance.LoadbalanceService;
+import com.jim.framework.rpc.loadbalance.RoundRobinLoadbalanceService;
 import com.jim.framework.rpc.proxy.RpcProxy;
 import com.jim.framework.rpc.registry.ConsulDiscoveryService;
 import com.jim.framework.rpc.registry.DiscoveryService;
@@ -10,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Proxy;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
 RPC 客户端
@@ -24,23 +25,14 @@ public class RpcClient {
 
     private ReferenceConfig referenceConfig;
 
-    private AtomicInteger roundRobin = new AtomicInteger(0);
-    private static final int MAX_VALUE=1000;
-    private static final int MIN_VALUE=1;
-
-    private AtomicInteger getRoundRobinValue(){
-        if(this.roundRobin.getAndAdd(1)>MAX_VALUE){
-            this.roundRobin.set(MIN_VALUE);
-        }
-        return this.roundRobin;
-    }
+    private static LoadbalanceService loadbalanceService=new RoundRobinLoadbalanceService();
 
     public RpcClient(ReferenceConfig referenceConfig) {
        this.referenceConfig=referenceConfig;
         DiscoveryService discoveryService=new ConsulDiscoveryService();
         List<RpcURL> urls=discoveryService.getUrls(referenceConfig.getRegistryHost(),referenceConfig.getRegistryPort());
         int size=urls.size();
-        int index = (this.getRoundRobinValue().get() + size) % size;
+        int index = loadbalanceService.index(size);
         logger.info("RpcClient init");
         RpcURL url= urls.get(index);
         this.referenceConfig.setHost(url.getHost());

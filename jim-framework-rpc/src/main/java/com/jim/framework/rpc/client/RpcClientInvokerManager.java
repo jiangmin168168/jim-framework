@@ -1,5 +1,6 @@
 package com.jim.framework.rpc.client;
 
+import com.jim.framework.rpc.cache.RpcClientInvokerCache;
 import com.jim.framework.rpc.config.ReferenceConfig;
 import com.jim.framework.rpc.exception.RpcException;
 import io.netty.bootstrap.Bootstrap;
@@ -10,12 +11,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 
 import java.net.InetSocketAddress;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -31,18 +28,12 @@ public class RpcClientInvokerManager {
     private static ReferenceConfig referenceConfig;
 
     private final static RpcClientInvokerManager instance=new RpcClientInvokerManager();
-    private CopyOnWriteArrayList<RpcClientInvoker> connectedHandlers = new CopyOnWriteArrayList<>();
-    private final static int RPC_REFERENCE_REFRESH_PERIOD=3*1000;
 
     private static final Logger logger = LoggerFactory.getLogger(RpcClientInvokerManager.class);
 
-    private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(
-            1,
-            new CustomizableThreadFactory("RpcReferenceConnectorTimer"));
-
-    private void addHandler(RpcClientInvoker handler) {
-        connectedHandlers.add(handler);
-        signalAvailableHandler();
+    public void addHandler(RpcClientInvoker handler) {
+        RpcClientInvokerCache.addHandler(handler);
+        this.signalAvailableHandler();
     }
 
     private void signalAvailableHandler() {
@@ -65,8 +56,7 @@ public class RpcClientInvokerManager {
     }
 
     public RpcClientInvoker getInvoker() {
-        CopyOnWriteArrayList<RpcClientInvoker> handlers = (CopyOnWriteArrayList<RpcClientInvoker>) this.connectedHandlers.clone();
-        int size = handlers.size();
+        int size = RpcClientInvokerCache.size();
 
         while (size <= 0) {
             try {
@@ -88,21 +78,20 @@ public class RpcClientInvokerManager {
                 });
                 boolean available = waitingForHandler();
                 if (available) {
-                    handlers = (CopyOnWriteArrayList<RpcClientInvoker>) this.connectedHandlers.clone();
-                    size = handlers.size();
+                    size = RpcClientInvokerCache.size();
                 }
             } catch (InterruptedException e) {
                 throw new RpcException(e);
             }
         }
-        return handlers.get(0);
+        return RpcClientInvokerCache.get(0);
     }
 
     private RpcClientInvokerManager(){
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
-                for (int i = 0; i < connectedHandlers.size(); i++) {
-                    RpcClientInvoker connectedServerHandler = connectedHandlers.get(i);
+                for (int i = 0; i < RpcClientInvokerCache.size(); i++) {
+                    RpcClientInvoker connectedServerHandler = RpcClientInvokerCache.get(i);
                     connectedServerHandler.close();
                 }
                 instance.eventLoopGroup.shutdownGracefully();

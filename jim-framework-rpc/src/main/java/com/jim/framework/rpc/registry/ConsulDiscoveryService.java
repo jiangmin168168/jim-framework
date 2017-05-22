@@ -1,6 +1,7 @@
 package com.jim.framework.rpc.registry;
 
 import com.google.common.collect.Lists;
+import com.jim.framework.rpc.cache.RpcClientInvokerCache;
 import com.jim.framework.rpc.common.RpcURL;
 import com.orbitz.consul.Consul;
 import com.orbitz.consul.HealthClient;
@@ -44,7 +45,7 @@ public class ConsulDiscoveryService extends AbstractConsulService implements Dis
                 @Override
                 public void notify(Map<ServiceHealthKey, ServiceHealth> map) {
                     logger.info("serviceHealthCache.addListener notify");
-                    //更新 RpcClientInvokerManager持有的连接缓存 TOTO
+                    RpcClientInvokerCache.clear();
 
                 }
             });

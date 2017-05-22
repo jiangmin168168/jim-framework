@@ -18,7 +18,7 @@ public class ConsulRegistryService extends AbstractConsulService implements Regi
         Consul consul = this.buildConsul(url.getRegistryHost(),url.getRegistryPort());
         AgentClient agent = consul.agentClient();
 
-        ImmutableRegCheck check = ImmutableRegCheck.builder().tcp("192.168.21.128:"+url.getPort()).interval(CONSUL_HEALTH_INTERVAL).build();
+        ImmutableRegCheck check = ImmutableRegCheck.builder().tcp(url.getHost()+":"+url.getPort()).interval(CONSUL_HEALTH_INTERVAL).build();
         ImmutableRegistration.Builder builder = ImmutableRegistration.builder();
         builder.id(CONSUL_ID).name(CONSUL_NAME).addTags(CONSUL_TAGS).address(url.getHost()).port(url.getPort()).addChecks(check);
 
