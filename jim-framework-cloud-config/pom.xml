@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.jim.framework</groupId>
-	<artifactId>cloud.com.jim.framework.cloud.provider.config</artifactId>
+	<artifactId>cloud.provider.config</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>com.jim.framework.cloud.com.jim.framework.cloud.provider.config</name>
+	<name>com.jim.framework.cloud.provider.config</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
@@ -25,10 +25,12 @@
 	</properties>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-com.jim.framework.cloud.provider.config-server</artifactId>
+			<artifactId>spring-cloud-config-server</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-eureka-server</artifactId>
