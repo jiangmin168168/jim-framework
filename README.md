@@ -18,8 +18,8 @@
 #### [分布式调用链追踪:dubbo+zipkin](http://www.cnblogs.com/ASPNET2008/p/6709900.html)
 
 ### 自定义RPC框架:netty+consul
-基于netty4,结合其它开源项目自我学习使用，可以参考:[简易RPC框架-学习使用](http://www.cnblogs.com/ASPNET2008/p/6859211.html)
-
++ [简易RPC框架-学习使用](http://www.cnblogs.com/ASPNET2008/p/6859211.html)
++ [简单RPC框架-基于Consul的服务注册与发现](http://www.cnblogs.com/ASPNET2008/p/6892137.html)
 
 ### [基于注解的锁](http://www.cnblogs.com/ASPNET2008/p/6308868.html) 
 
