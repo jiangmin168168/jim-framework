@@ -17,7 +17,7 @@
 
 #### [分布式调用链追踪:dubbo+zipkin](http://www.cnblogs.com/ASPNET2008/p/6709900.html)
 
-### 自定义RPC框架
+### 自定义RPC框架:netty+consul
 基于netty4,结合其它开源项目自我学习使用，可以参考:[简易RPC框架-学习使用](http://www.cnblogs.com/ASPNET2008/p/6859211.html)
 
 
@@ -32,7 +32,6 @@
 + HandlerMethodArgumentResolver （未同步代码）
 [接口参数注入](http://www.cnblogs.com/ASPNET2008/p/5393391.html)
 
-### Mybatis
 
 ### RabbitMQ
 + [从头开始搭建一个Spring boot+RabbitMQ环境](http://www.cnblogs.com/ASPNET2008/p/6414145.html)
@@ -41,8 +40,6 @@
 ### Spring Cache+Redis
 + [Spring Cache扩展：注解失效时间+主动刷新缓存](http://www.cnblogs.com/ASPNET2008/p/6511500.html)
 
-### Elasticsearch
-主要是spring.data.elasticsearch应用，JPA的操作很简单粗爆。
 
 ## 面向对象 （未同步代码）
 工作中的一些设计实践，合适不合适仁者见仁吧。
