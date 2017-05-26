@@ -87,6 +87,17 @@ public class ConsulRegistryService extends AbstractConsulService implements Regi
 }
 ```
 
+由于我实现的RPC是基于TCP的，所以服务注册的健康检查也指定为TCP，consul会按指定的IP以及端口建立连接以此判断服务的健康状态。如果是http，则需要调用http方法，同时指定健康检查地址。
+```java
+ImmutableRegCheck check = ImmutableRegCheck.builder().tcp(url.getHost()+":"+url.getPort()).interval(CONSUL_HEALTH_INTERVAL).build();
+```
+后台的监控信息如下：
+
+
+> 虽然只是指定了TCP,可以出去某种机制后台依然会发起HTTP的健康检查请求
+
+
+
 ### 服务发现
 + DiscoveryService
 获取所有注册的有效的服务信息。
