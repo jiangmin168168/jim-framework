@@ -8,22 +8,32 @@ import org.springframework.cglib.reflect.FastMethod;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 public class RpcServerInvoker extends AbstractInvoker<RpcRequest> {
 
     private final Map<String, Object> handlerMap;
 
-    public RpcServerInvoker(Map<String, Object> handlerMap, Map<String,RpcFilter> filterMap) {
+    private final Executor executor;
+
+    public RpcServerInvoker(Map<String, Object> handlerMap, Map<String,RpcFilter> filterMap,Executor executor) {
         super(handlerMap,filterMap);
         this.handlerMap=handlerMap;
+        this.executor=executor;
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, RpcRequest rpcRequest) {
 
-        RpcInvoker rpcInvoker=this.buildInvokerChain(this);
-        RpcResponse response=(RpcResponse) rpcInvoker.invoke(this.buildRpcInvocation(rpcRequest));
-        channelHandlerContext.writeAndFlush(response);
+        this.executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                RpcInvoker rpcInvoker=RpcServerInvoker.this.buildInvokerChain(RpcServerInvoker.this);
+                RpcResponse response=(RpcResponse) rpcInvoker.invoke(RpcServerInvoker.this.buildRpcInvocation(rpcRequest));
+                channelHandlerContext.writeAndFlush(response);
+            }
+        });
+
     }
 
     @Override

@@ -7,9 +7,6 @@ import com.jim.framework.rpc.client.RpcReference;
 import com.jim.framework.rpc.consumer.service.ProductCommentService;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 /**
  * Created by jiang on 2017/5/10.
  */
@@ -28,20 +25,20 @@ public class ProductServiceImpl implements ProductCommentService {
     public Product getById(Long productId){
        Product product= this.productService.getById(productId);
 
-       int count=100;
-        ExecutorService executorService= Executors.newFixedThreadPool(count);
-        for(int i=0;i<count;i++) {
-            final Long tempProductId=Long.valueOf(i);
-            executorService.submit(new Runnable() {
-                @Override
-                public void run() {
-                    Product tempProduct= ProductServiceImpl.this.productService.getById(tempProductId);
-                    System.out.println("aysc call:"+tempProduct.getId());
-
-                }
-            });
-        }
-        executorService.shutdown();
+       //int count=100;
+//        ExecutorService executorService= Executors.newFixedThreadPool(count);
+//        for(int i=0;i<count;i++) {
+//            final Long tempProductId=Long.valueOf(i);
+//            executorService.submit(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Product tempProduct= ProductServiceImpl.this.productService.getById(tempProductId);
+//                    System.out.println("aysc call:"+tempProduct.getId());
+//
+//                }
+//            });
+//        }
+//        executorService.shutdown();
 //        Product responseFuture= this.productServiceAsync.getById(productId);
 //        if(null==responseFuture){
 //            System.out.println("async call result:product is null");

@@ -7,10 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+@ComponentScan(basePackages = {"com.jim.framework.rpc.provider","com.jim.framework.rpc"})
 @Configuration
-//@ComponentScan(basePackages = {"com.jim.framework.rpc.provider","com.jim.framework.rpc"})
 public class ProviderConfiguration {
 
     private final static Logger logger = LoggerFactory.getLogger(ProviderConfiguration.class);
@@ -33,4 +34,7 @@ public class ProviderConfiguration {
     public RpcServerInitializer rpcServerInitializer(){
         return new RpcServerInitializer();
     }
+
+
+
 }

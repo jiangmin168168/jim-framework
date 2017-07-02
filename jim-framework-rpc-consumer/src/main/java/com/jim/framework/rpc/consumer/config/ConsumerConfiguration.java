@@ -2,7 +2,6 @@ package com.jim.framework.rpc.consumer.config;
 
 import com.jim.framework.rpc.beans.BeanPostPrcessorReference;
 import com.jim.framework.rpc.config.ReferenceConfig;
-import com.jim.framework.rpc.utils.ApplicationContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -24,11 +23,6 @@ public class ConsumerConfiguration {
         referenceConfig.setRegistryHost("127.0.0.1");
         referenceConfig.setRegistryPort(8500);
         return referenceConfig;
-    }
-
-    @Bean
-    public ApplicationContextUtils applicationContextUtils(){
-        return new ApplicationContextUtils();
     }
 
 }
