@@ -21,6 +21,7 @@
 + [简易RPC框架-学习使用](http://www.cnblogs.com/ASPNET2008/p/6859211.html)
 + [简单RPC框架-基于Consul的服务注册与发现](http://www.cnblogs.com/ASPNET2008/p/6892137.html)
 + [简单RPC框架-业务线程池](http://www.cnblogs.com/ASPNET2008/p/7106820.html)
++ [简易RPC框架-私有协议栈](http://www.cnblogs.com/ASPNET2008/p/7588822.html)
 
 ### [基于注解的锁](http://www.cnblogs.com/ASPNET2008/p/6308868.html) 
 
