@@ -6,6 +6,7 @@ import com.jim.framework.rpc.exception.RpcException;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -64,7 +65,11 @@ public class RpcClientInvokerManager {
                 Bootstrap b = new Bootstrap();
                 b.group(eventLoopGroup)
                         .channel(NioSocketChannel.class)
-                        .handler(new RpcClientInitializer());
+                        .handler(new RpcClientInitializer())
+                        .option(ChannelOption.TCP_NODELAY,true)
+                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,(int)this.referenceConfig.getConnectTimeoutMillis())
+
+                ;
 
                 ChannelFuture channelFuture = b.connect(remotePeer);
                 channelFuture.addListener(new ChannelFutureListener() {

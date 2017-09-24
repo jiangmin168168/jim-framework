@@ -1,41 +1,50 @@
 package com.jim.framework.rpc.codec;
 
+import com.jim.framework.rpc.protocol.RpcMessage;
+import com.jim.framework.rpc.protocol.RpcMessageHeader;
 import com.jim.framework.rpc.utils.ProtoStuffSerializeUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.ByteToMessageDecoder;
-
-import java.util.List;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 /**
 解码器
  * Created by jiang on 2017/5/10.
  */
-public class RpcDecoder extends ByteToMessageDecoder {
+public class RpcDecoder extends LengthFieldBasedFrameDecoder {
 
     private Class<?> genericClass;
 
+    private static final int HEADER_SIZE = 4;
+
+    private static final int LENGTH_FIELD_OFFSET=0;
+
+    private static final int LENGTH_FIELD_LENGTH=4;
+
+    private static final int MAX_FRAME_LENGTH=Integer.MAX_VALUE;
+
     public RpcDecoder(Class<?> genericClass) {
+        super(MAX_FRAME_LENGTH,LENGTH_FIELD_OFFSET,LENGTH_FIELD_LENGTH);
         this.genericClass = genericClass;
     }
 
     @Override
-    public final void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        if (in.readableBytes() < 4) {
-            return;
+    public Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
+        ByteBuf frame=(ByteBuf)super.decode(ctx,in);
+        if(null==frame){
+            return null;
         }
-        in.markReaderIndex();
-        int dataLength = in.readInt();
-        if (dataLength < 0) {
-            ctx.close();
-        }
-        if (in.readableBytes() < dataLength) {
-            in.resetReaderIndex();
-        }
-        byte[] data = new byte[dataLength];
-        in.readBytes(data);
+
+        RpcMessage message=new RpcMessage();
+        RpcMessageHeader messageHeader=new RpcMessageHeader();
+        messageHeader.setLength(frame.readInt());
+        message.setMessageHeader(messageHeader);
+
+        byte[] data = new byte[message.getMessageHeader().getLength()];
+        frame.readBytes(data);
 
         Object obj = ProtoStuffSerializeUtil.deserialize(data, genericClass);
-        out.add(obj);
+        message.setMessageBody(obj);
+        return message;
     }
 }

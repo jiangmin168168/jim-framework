@@ -1,7 +1,10 @@
 package com.jim.framework.rpc.client;
 
 import com.jim.framework.rpc.common.*;
+import com.jim.framework.rpc.protocol.RpcMessage;
+import com.jim.framework.rpc.protocol.RpcMessageHeader;
 import com.jim.framework.rpc.proxy.ResponseFuture;
+import com.jim.framework.rpc.utils.ProtoStuffSerializeUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
@@ -12,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RpcClientInvoker extends AbstractInvoker<RpcResponse> {
+public class RpcClientInvoker extends AbstractInvoker<RpcMessage> {
 
     private static final Logger logger = LoggerFactory.getLogger(RpcClientInvoker.class);
 
@@ -45,7 +48,8 @@ public class RpcClientInvoker extends AbstractInvoker<RpcResponse> {
     }
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, RpcResponse response) {
+    public void channelRead0(ChannelHandlerContext ctx, RpcMessage message) {
+        RpcResponse response=(RpcResponse) message.getMessageBody();
         String requestId = response.getRequestId();
         ResponseFuture responseFuture = pendingRPC.get(requestId);
         if (responseFuture != null) {
@@ -59,7 +63,13 @@ public class RpcClientInvoker extends AbstractInvoker<RpcResponse> {
         RpcRequest request=this.getRpcRequest();
         ResponseFuture responseFuture = new ResponseFuture(request);
         pendingRPC.put(request.getRequestId(), responseFuture);
-        channel.writeAndFlush(request);
+        RpcMessage message=new RpcMessage();
+        byte[] data = ProtoStuffSerializeUtil.serialize(request);
+        RpcMessageHeader messageHeader=new RpcMessageHeader();
+        messageHeader.setLength(data.length);
+        message.setMessageHeader(messageHeader);
+        message.setMessageBody(request);
+        channel.writeAndFlush(message);
         return responseFuture;
     }
 

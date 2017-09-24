@@ -11,7 +11,6 @@ import com.jim.framework.rpc.threadpool.RpcThreadPoolFactory;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -44,7 +43,6 @@ public class RpcServerInitializer extends ChannelInitializer<SocketChannel> impl
        ;
         Executor executor= this.rpcThreadPoolFactory.getThreadPool(ConstantConfig.DEFAULT_THREAD_POOL_NAME).getExecutor(1,1);
         pipeline
-                .addLast(new LengthFieldBasedFrameDecoder(65536,0,4,0,0))
                 .addLast(new RpcEncoder(RpcResponse.class))
                 .addLast(new RpcDecoder(RpcRequest.class))
                 .addLast(new RpcServerInvoker(this.handlerMap,this.filterMap,executor));
