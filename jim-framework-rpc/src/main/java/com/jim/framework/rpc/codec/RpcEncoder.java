@@ -25,7 +25,7 @@ public class RpcEncoder extends MessageToByteEncoder<RpcMessage> {
             throw new RpcException("RpcMessage is null");
         }
         if (genericClass.isInstance(in.getMessageBody())) {
-            byte[] data = ProtoStuffSerializeUtil.serialize(in.getMessageBody());
+            byte[] data = ProtoStuffSerializeUtil.serialize(in);
             out.writeInt(data.length);
             out.writeBytes(data);
         }

@@ -1,7 +1,6 @@
 package com.jim.framework.rpc.codec;
 
 import com.jim.framework.rpc.protocol.RpcMessage;
-import com.jim.framework.rpc.protocol.RpcMessageHeader;
 import com.jim.framework.rpc.utils.ProtoStuffSerializeUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -34,17 +33,10 @@ public class RpcDecoder extends LengthFieldBasedFrameDecoder {
         if(null==frame){
             return null;
         }
-
-        RpcMessage message=new RpcMessage();
-        RpcMessageHeader messageHeader=new RpcMessageHeader();
-        messageHeader.setLength(frame.readInt());
-        message.setMessageHeader(messageHeader);
-
-        byte[] data = new byte[message.getMessageHeader().getLength()];
+        byte[] data = new byte[frame.readInt()];
         frame.readBytes(data);
 
-        Object obj = ProtoStuffSerializeUtil.deserialize(data, genericClass);
-        message.setMessageBody(obj);
+        RpcMessage message = ProtoStuffSerializeUtil.deserialize(data, RpcMessage.class);
         return message;
     }
 }

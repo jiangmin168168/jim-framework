@@ -6,11 +6,14 @@ import com.jim.framework.rpc.common.RpcFilter;
 import com.jim.framework.rpc.common.RpcRequest;
 import com.jim.framework.rpc.common.RpcResponse;
 import com.jim.framework.rpc.config.ConstantConfig;
+import com.jim.framework.rpc.constants.Constants;
 import com.jim.framework.rpc.filter.ActiveFilter;
+import com.jim.framework.rpc.keepalive.ServerHeartbeatHandler;
 import com.jim.framework.rpc.threadpool.RpcThreadPoolFactory;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -38,14 +41,17 @@ public class RpcServerInitializer extends ChannelInitializer<SocketChannel> impl
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
 
-        logger.info("RpcServerInitializer.initChannel");
+        //logger.info("RpcServerInitializer.initChannel");
         ChannelPipeline pipeline = socketChannel.pipeline();
        ;
         Executor executor= this.rpcThreadPoolFactory.getThreadPool(ConstantConfig.DEFAULT_THREAD_POOL_NAME).getExecutor(1,1);
         pipeline
                 .addLast(new RpcEncoder(RpcResponse.class))
                 .addLast(new RpcDecoder(RpcRequest.class))
-                .addLast(new RpcServerInvoker(this.handlerMap,this.filterMap,executor));
+                .addLast(new IdleStateHandler(Constants.READER_TIME_SECONDS, 0, 0))
+                .addLast(new ServerHeartbeatHandler())
+                .addLast(new RpcServerInvoker(this.handlerMap,this.filterMap,executor))
+        ;
     }
 
     @Override

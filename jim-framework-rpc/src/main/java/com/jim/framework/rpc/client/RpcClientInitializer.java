@@ -6,11 +6,14 @@ import com.jim.framework.rpc.common.RpcFilter;
 import com.jim.framework.rpc.common.RpcRequest;
 import com.jim.framework.rpc.common.RpcResponse;
 import com.jim.framework.rpc.config.ConstantConfig;
+import com.jim.framework.rpc.constants.Constants;
 import com.jim.framework.rpc.filter.ActiveFilter;
+import com.jim.framework.rpc.keepalive.ClientHeartbeatHandler;
 import com.jim.framework.rpc.utils.ApplicationContextUtils;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,8 +50,12 @@ public class RpcClientInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ChannelPipeline cp = socketChannel.pipeline();
+
         cp.addLast(new RpcEncoder(RpcRequest.class));
         cp.addLast(new RpcDecoder(RpcResponse.class));
+        cp.addLast(new IdleStateHandler(0, 0, Constants.ALLIDLE_TIME_SECONDS));
+        cp.addLast(new ClientHeartbeatHandler());
         cp.addLast(new RpcClientInvoker(this.getFilterMap()));
+
     }
 }
