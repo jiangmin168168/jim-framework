@@ -12,4 +12,10 @@ import java.lang.annotation.Target;
 @Component
 public @interface RpcReference {
     boolean isSync() default true;
+
+    /**
+     * 客户端最大并发数
+     * @return
+     */
+    int maxExecutesCount() default 10;
 }

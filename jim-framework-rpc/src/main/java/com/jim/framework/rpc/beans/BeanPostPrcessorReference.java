@@ -54,7 +54,7 @@ public class BeanPostPrcessorReference implements BeanPostProcessor {
                 try {
                     RpcReference reference = method.getAnnotation(RpcReference.class);
                     if (reference != null) {
-                        Object value = this.rpcClient.createProxy(method.getParameterTypes()[0],reference.isSync());
+                        Object value = this.rpcClient.createProxy(method.getParameterTypes()[0],reference);
                         if (value != null) {
                             method.invoke(bean, new Object[] { value });
                         }
@@ -72,7 +72,7 @@ public class BeanPostPrcessorReference implements BeanPostProcessor {
                 }
                 RpcReference reference = field.getAnnotation(RpcReference.class);
                 if (reference != null) {
-                    Object value=this.rpcClient.createProxy(field.getType(),reference.isSync());
+                    Object value=this.rpcClient.createProxy(field.getType(),reference);
                     if (value != null) {
                         field.set(bean, value);
                     }

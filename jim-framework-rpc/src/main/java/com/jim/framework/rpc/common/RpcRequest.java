@@ -12,6 +12,7 @@ public class RpcRequest {
     private String methodName;
     private Class<?>[] parameterTypes;
     private Object[] parameters;
+    private int maxExecutesCount;
 
     public String getRequestId() {
         return requestId;
@@ -51,5 +52,13 @@ public class RpcRequest {
 
     public void setParameters(Object[] parameters) {
         this.parameters = parameters;
+    }
+
+    public int getMaxExecutesCount() {
+        return maxExecutesCount;
+    }
+
+    public void setMaxExecutesCount(int maxExecutesCount) {
+        this.maxExecutesCount = maxExecutesCount;
     }
 }

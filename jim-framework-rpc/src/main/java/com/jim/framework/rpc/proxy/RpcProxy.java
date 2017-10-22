@@ -2,6 +2,7 @@ package com.jim.framework.rpc.proxy;
 
 import com.jim.framework.rpc.client.RpcClientInvoker;
 import com.jim.framework.rpc.client.RpcClientInvokerManager;
+import com.jim.framework.rpc.client.RpcReference;
 import com.jim.framework.rpc.common.RpcInvoker;
 import com.jim.framework.rpc.common.RpcRequest;
 import com.jim.framework.rpc.config.ReferenceConfig;
@@ -19,10 +20,13 @@ public class RpcProxy <T> implements InvocationHandler {
 
     private ReferenceConfig referenceConfig;
 
-    public RpcProxy(Class<T> clazz,ReferenceConfig referenceConfig,boolean isSync) {
+    private RpcReference reference;
+
+    public RpcProxy(Class<T> clazz,ReferenceConfig referenceConfig,RpcReference reference) {
         this.clazz = clazz;
         this.referenceConfig=referenceConfig;
-        this.isSync=isSync;
+        this.reference=reference;
+        this.isSync=reference.isSync();
     }
 
     @Override
@@ -34,6 +38,10 @@ public class RpcProxy <T> implements InvocationHandler {
         request.setMethodName(method.getName());
         request.setParameterTypes(method.getParameterTypes());
         request.setParameters(args);
+
+        if (this.reference != null) {
+            request.setMaxExecutesCount(this.reference.maxExecutesCount());
+        }
 
         RpcClientInvoker invoker = RpcClientInvokerManager.getInstance(this.referenceConfig).getInvoker();
         invoker.setRpcRequest(request);

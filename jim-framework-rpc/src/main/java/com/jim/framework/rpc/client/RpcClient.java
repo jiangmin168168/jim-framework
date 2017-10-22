@@ -41,11 +41,11 @@ public class RpcClient {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T createProxy(Class<T> interfaceClass,boolean isSync) {
+    public <T> T createProxy(Class<T> interfaceClass,RpcReference reference) {
         return (T) Proxy.newProxyInstance(
                 interfaceClass.getClassLoader(),
                 new Class<?>[]{interfaceClass},
-                new RpcProxy<T>(interfaceClass,this.referenceConfig,isSync)
+                new RpcProxy<T>(interfaceClass,this.referenceConfig,reference)
         );
     }
 }

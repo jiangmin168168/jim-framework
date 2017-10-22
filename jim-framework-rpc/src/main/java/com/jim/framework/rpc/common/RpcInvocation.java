@@ -15,4 +15,6 @@ public interface RpcInvocation {
 
     Object[] getParameters();
 
+    int getMaxExecutesCount();
+
 }

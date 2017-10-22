@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductServiceImpl implements ProductCommentService {
 
-    @RpcReference
+    @RpcReference(maxExecutesCount = 1)
     private ProductService productService;
 
     @RpcReference(isSync = false)
@@ -25,7 +25,7 @@ public class ProductServiceImpl implements ProductCommentService {
     public Product getById(Long productId){
        Product product= this.productService.getById(productId);
 
-       //int count=100;
+//       int count=10;
 //        ExecutorService executorService= Executors.newFixedThreadPool(count);
 //        for(int i=0;i<count;i++) {
 //            final Long tempProductId=Long.valueOf(i);
