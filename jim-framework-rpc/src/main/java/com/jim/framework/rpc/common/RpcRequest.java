@@ -1,6 +1,8 @@
 package com.jim.framework.rpc.common;
 
 
+import java.util.Map;
+
 /**
 请求对象
  * Created by jiang on 2017/5/10.
@@ -13,6 +15,7 @@ public class RpcRequest {
     private Class<?>[] parameterTypes;
     private Object[] parameters;
     private int maxExecutesCount;
+    private Map<String,Object> contextParameters;
 
     public String getRequestId() {
         return requestId;
@@ -60,5 +63,13 @@ public class RpcRequest {
 
     public void setMaxExecutesCount(int maxExecutesCount) {
         this.maxExecutesCount = maxExecutesCount;
+    }
+
+    public Map<String, Object> getContextParameters() {
+        return contextParameters;
+    }
+
+    public void setContextParameters(Map<String, Object> contextParameters) {
+        this.contextParameters = contextParameters;
     }
 }

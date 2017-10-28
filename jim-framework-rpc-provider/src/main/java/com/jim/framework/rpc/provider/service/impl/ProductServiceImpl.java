@@ -3,11 +3,17 @@ package com.jim.framework.rpc.provider.service.impl;
 import com.jim.framework.rpc.api.model.Comment;
 import com.jim.framework.rpc.api.model.Product;
 import com.jim.framework.rpc.api.service.CommentService;
+import com.jim.framework.rpc.context.RpcContext;
 import com.jim.framework.rpc.server.RpcService;
 import com.jim.framework.rpc.api.service.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RpcService
 public class ProductServiceImpl implements ProductService,CommentService {
+
+    Logger logger= LoggerFactory.getLogger(ProductServiceImpl.class);
+
     @Override
     public Product getById(Long id) {
 //        try {
@@ -18,6 +24,7 @@ public class ProductServiceImpl implements ProductService,CommentService {
         Product product=new Product();
         product.setId(id);
         product.setName(id+"name");
+        logger.info("get context parameter from server,rpc-version={}",String.valueOf(RpcContext.getContext().getContextParameter("rpc-version")));
         return product;
     }
 

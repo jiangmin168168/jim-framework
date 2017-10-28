@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by jiang on 2017/5/14.
  */
-@ActiveFilter(group = {ConstantConfig.CONSUMER})
+@ActiveFilter(group = {ConstantConfig.CONSUMER,ConstantConfig.PROVIDER})
 public class FutureFilter implements RpcFilter {
 
     private final static Logger logger = LoggerFactory.getLogger(FutureFilter.class);

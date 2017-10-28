@@ -7,9 +7,9 @@ import com.jim.framework.rpc.common.RpcRequest;
 import com.jim.framework.rpc.common.RpcResponse;
 import com.jim.framework.rpc.config.ConstantConfig;
 import com.jim.framework.rpc.constants.Constants;
-import com.jim.framework.rpc.filter.ActiveFilter;
 import com.jim.framework.rpc.keepalive.ServerHeartbeatHandler;
 import com.jim.framework.rpc.threadpool.RpcThreadPoolFactory;
+import com.jim.framework.rpc.utils.ActiveFilterUtil;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -67,21 +66,6 @@ public class RpcServerInitializer extends ChannelInitializer<SocketChannel> impl
                 }
             }
         }
-
-        Map<String, Object> rpcFilterMap = applicationContext.getBeansWithAnnotation(ActiveFilter.class);
-        if (null!=rpcFilterMap) {
-            for (Object filterBean : rpcFilterMap.values()) {
-                Class<?>[] interfaces = filterBean.getClass().getInterfaces();
-                ActiveFilter activeFilter=filterBean.getClass().getAnnotation(ActiveFilter.class);
-                if(null!=activeFilter.group()&& Arrays.stream(activeFilter.group()).filter(p->p.contains(ConstantConfig.PROVIDER)).count()==0){
-                    continue;
-                }
-                for(Class<?> clazz:interfaces) {
-                    if(clazz.isAssignableFrom(RpcFilter.class)){
-                        this.filterMap.put(filterBean.getClass().getName(),(RpcFilter) filterBean);
-                    }
-                }
-            }
-        }
+        this.filterMap.putAll(ActiveFilterUtil.getFilterMap(true));
     }
 }

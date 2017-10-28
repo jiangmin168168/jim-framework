@@ -69,6 +69,7 @@ public class RpcClientInvoker extends AbstractInvoker<RpcMessage> {
         messageHeader.setLength(data.length);
         message.setMessageHeader(messageHeader);
         message.setMessageBody(request);
+
         channel.writeAndFlush(message);
         return responseFuture;
     }

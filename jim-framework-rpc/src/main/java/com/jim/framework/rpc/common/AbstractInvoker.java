@@ -51,6 +51,11 @@ public abstract class AbstractInvoker<T> extends SimpleChannelInboundHandler<T> 
             public int getMaxExecutesCount() {
                 return request.getMaxExecutesCount();
             }
+
+            @Override
+            public Map<String, Object> getContextParameters() {
+                return request.getContextParameters();
+            }
         };
         return rpcInvocation;
     }

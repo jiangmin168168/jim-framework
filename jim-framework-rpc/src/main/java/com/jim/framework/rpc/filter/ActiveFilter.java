@@ -13,4 +13,5 @@ import java.lang.annotation.Target;
 public @interface ActiveFilter {
     String[] group() default {};
     String[] value() default {};
+    int order() default 999999999;
 }

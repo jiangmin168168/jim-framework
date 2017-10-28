@@ -43,6 +43,8 @@ public class RpcProxy <T> implements InvocationHandler {
             request.setMaxExecutesCount(this.reference.maxExecutesCount());
         }
 
+        request.setContextParameters(RpcContext.getContext().getContextParameters());
+
         RpcClientInvoker invoker = RpcClientInvokerManager.getInstance(this.referenceConfig).getInvoker();
         invoker.setRpcRequest(request);
 
