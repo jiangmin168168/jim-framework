@@ -17,6 +17,11 @@ public class AbstractConsulService {
     protected final static String CONSUL_HEALTH_INTERVAL="1s";
 
     protected Consul buildConsul(String registryHost, int registryPort){
-        return Consul.builder().withHostAndPort(HostAndPort.fromString(registryHost+":"+registryPort)).build();
+        return Consul.builder()
+                .withConnectTimeoutMillis(20*1000)
+                .withReadTimeoutMillis(20*1000)
+                .withHostAndPort(HostAndPort.fromString(registryHost+":"+registryPort))
+                .build()
+                ;
     }
 }

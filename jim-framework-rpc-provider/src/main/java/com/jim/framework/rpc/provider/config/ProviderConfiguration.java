@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 @ComponentScan(basePackages = {"com.jim.framework.rpc.provider","com.jim.framework.rpc"})
 @Configuration
 public class ProviderConfiguration {
@@ -21,9 +24,19 @@ public class ProviderConfiguration {
     public RpcServer rpcServer(RpcServerInitializer rpcServerInitializer){
         logger.info("begin to start");
         ServiceConfig serviceConfig=new ServiceConfig();
-        serviceConfig.setHost("127.0.0.1");
+        InetAddress address=null;
+        try {
+            address = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        String host="127.0.0.1";
+        if(null!=address){
+            host=address.getHostAddress();
+        }
+        serviceConfig.setHost(host);
         serviceConfig.setPort(9988);
-        serviceConfig.setRegistryHost("127.0.0.1");
+        serviceConfig.setRegistryHost("192.168.237.128");
         serviceConfig.setRegistryPort(8500);
         RpcServer rpcServer= new RpcServer(serviceConfig,rpcServerInitializer);
         logger.info("service is started");
