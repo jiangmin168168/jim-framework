@@ -26,6 +26,8 @@
 		<protostuff.version>1.5.2</protostuff.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<guava.version>19.0</guava.version>
+		<hystrix-version>1.5.12</hystrix-version>
+
 	</properties>
 
 	<dependencies>
@@ -84,6 +86,19 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+
+
+		<dependency>
+			<groupId>com.netflix.hystrix</groupId>
+			<artifactId>hystrix-core</artifactId>
+			<version>${hystrix-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.netflix.hystrix</groupId>
+			<artifactId>hystrix-metrics-event-stream</artifactId>
+			<version>${hystrix-version}</version>
+		</dependency>
+
 
 	</dependencies>
 

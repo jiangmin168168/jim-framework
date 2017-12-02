@@ -18,4 +18,6 @@ public @interface RpcReference {
      * @return
      */
     int maxExecutesCount() default 10;
+
+    Class<?> fallbackServiceClazz() default Object.class;
 }

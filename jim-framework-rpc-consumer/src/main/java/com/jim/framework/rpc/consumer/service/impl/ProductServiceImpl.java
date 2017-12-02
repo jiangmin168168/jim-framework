@@ -4,6 +4,7 @@ import com.jim.framework.rpc.api.model.Product;
 import com.jim.framework.rpc.api.service.CommentService;
 import com.jim.framework.rpc.api.service.ProductService;
 import com.jim.framework.rpc.client.RpcReference;
+import com.jim.framework.rpc.consumer.service.ProductCommentMockService;
 import com.jim.framework.rpc.consumer.service.ProductCommentService;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductServiceImpl implements ProductCommentService {
 
-    @RpcReference(maxExecutesCount = 1)
+    @RpcReference(
+            maxExecutesCount = 1,
+            fallbackServiceClazz = ProductCommentMockService.class
+
+    )
     private ProductService productService;
 
     @RpcReference(isSync = false)
