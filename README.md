@@ -27,6 +27,9 @@
 + [简易RPC框架-客户端限流配置](http://www.cnblogs.com/ASPNET2008/p/7712974.html)
 + [简易RPC框架-上下文](http://www.cnblogs.com/ASPNET2008/p/7749242.html)
 + [简易RPC框架-代理](http://www.cnblogs.com/ASPNET2008/p/7821756.html)
++ [简易RPC框架-熔断降级机制](http://www.cnblogs.com/ASPNET2008/p/7954782.html)
+
+> 熔断降级实现影响上下文机制，后续更新解决
 
 ### [基于注解的锁](http://www.cnblogs.com/ASPNET2008/p/6308868.html) 
 

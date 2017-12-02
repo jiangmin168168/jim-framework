@@ -19,5 +19,9 @@ public @interface RpcReference {
      */
     int maxExecutesCount() default 10;
 
+    /**
+     * 服务降级的伪装者类对象
+     * @return
+     */
     Class<?> fallbackServiceClazz() default Object.class;
 }

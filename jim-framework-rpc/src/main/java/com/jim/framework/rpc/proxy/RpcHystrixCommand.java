@@ -24,14 +24,29 @@ public class RpcHystrixCommand extends HystrixCommand {
 
     private Logger logger= LoggerFactory.getLogger(RpcHystrixCommand.class);
 
+    /**
+     * 远程目标方法
+     */
     private Method method;
 
+    /**
+     * 远程目标接口
+     */
     private Object obj;
 
+    /**
+     * 远程方法所需要的参数
+     */
     private Object[] params;
 
+    /**
+     * 远程接口客户端引用注解
+     */
     private RpcReference rpcReference;
 
+    /**
+     * RPC客户端配置
+     */
     private ReferenceConfig referenceConfig;
 
 
