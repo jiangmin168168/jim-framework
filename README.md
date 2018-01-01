@@ -43,9 +43,10 @@
 [接口参数注入](http://www.cnblogs.com/ASPNET2008/p/5393391.html)
 
 
-### RabbitMQ
-+ [从头开始搭建一个Spring boot+RabbitMQ环境](http://www.cnblogs.com/ASPNET2008/p/6414145.html)
+### 消息队列
 
++ [从头开始搭建一个Spring boot+RabbitMQ环境](http://www.cnblogs.com/ASPNET2008/p/6414145.html)
++ [从头开始搭建一个Spring boot+ActiveMQ高可用分布式环境](http://www.cnblogs.com/ASPNET2008/p/8166404.html)
 
 ### Spring Cache+Redis
 + [Spring Cache扩展：注解失效时间+主动刷新缓存](http://www.cnblogs.com/ASPNET2008/p/6511500.html)
