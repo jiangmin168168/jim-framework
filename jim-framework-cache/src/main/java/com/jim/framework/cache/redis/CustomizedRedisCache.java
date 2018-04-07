@@ -9,6 +9,9 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.core.RedisOperations;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * 自定义的redis缓存
  * Created by jiang on 2017/3/5.
@@ -18,6 +21,8 @@ public class CustomizedRedisCache extends RedisCache {
     private static final Logger logger = LoggerFactory.getLogger(CustomizedRedisCache.class);
 
     private RedisOperations redisOperations;
+
+    private static final Lock REFRESH_CACKE_LOCK=new ReentrantLock();
 
     private CacheSupport getCacheSupport(){
         return ApplicationContextHelper.getApplicationContext().getBean(CacheSupport.class);
@@ -31,7 +36,6 @@ public class CustomizedRedisCache extends RedisCache {
 
 
     public ValueWrapper get(final Object key) {
-
         ValueWrapper valueWrapper= super.get(key);
         if(null!=valueWrapper){
             CacheItemConfig cacheItemConfig=CacheContainer.getCacheItemConfigByCacheName(key.toString());
@@ -41,13 +45,31 @@ public class CustomizedRedisCache extends RedisCache {
             Long ttl= this.redisOperations.getExpire(cacheKey);
             if(null!=ttl&& ttl<=preLoadTimeSecond){
                 logger.info("key:{} ttl:{} preloadSecondTime:{}",cacheKey,ttl,preLoadTimeSecond);
-                ThreadTaskHelper.run(new Runnable() {
-                    @Override
-                    public void run() {
-                        logger.info("refresh key:{}",cacheKey);
-                        CustomizedRedisCache.this.getCacheSupport().refreshCacheByKey(CustomizedRedisCache.super.getName(),key.toString());
-                    }
-                });
+                if(ThreadTaskHelper.hasRunningRefreshCacheTask(cacheKey)){
+                    logger.info("do not need to refresh");
+                }
+                else {
+                    ThreadTaskHelper.run(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                REFRESH_CACKE_LOCK.lock();
+                                if(ThreadTaskHelper.hasRunningRefreshCacheTask(cacheKey)){
+                                    logger.info("do not need to refresh");
+                                }
+                                else {
+                                    logger.info("refresh key:{}", cacheKey);
+                                    CustomizedRedisCache.this.getCacheSupport().refreshCacheByKey(CustomizedRedisCache.super.getName(), key.toString());
+                                    ThreadTaskHelper.removeRefreshCacheTask(cacheKey);
+                                }
+
+                            }
+                            finally {
+                                REFRESH_CACKE_LOCK.unlock();
+                            }
+                        }
+                    });
+                }
             }
         }
         return valueWrapper;

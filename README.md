@@ -49,8 +49,9 @@
 + [从头开始搭建一个Spring boot+ActiveMQ高可用分布式环境](http://www.cnblogs.com/ASPNET2008/p/8166404.html)
 
 ### Spring Cache+Redis
-+ [Spring Cache扩展：注解失效时间+主动刷新缓存](http://www.cnblogs.com/ASPNET2008/p/6511500.html)
 
++ [Spring Cache扩展：注解失效时间+主动刷新缓存](http://www.cnblogs.com/ASPNET2008/p/6511500.html)
++ [Spring Cache扩展：注解失效时间+主动刷新缓存(二)](http://www.cnblogs.com/ASPNET2008/p/8733087.html)
 
 ## 面向对象 （未同步代码）
 工作中的一些设计实践，合适不合适仁者见仁吧。
