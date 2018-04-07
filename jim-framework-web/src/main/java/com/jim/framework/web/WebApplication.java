@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan("com.jim")
+@ComponentScan(basePackages = {"com.jim"})
 //@EnableElasticsearchRepositories(basePackages = "com.jim.repository")
 public class WebApplication {
 

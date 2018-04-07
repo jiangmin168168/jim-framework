@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <property name="appName" value="eagle" />
+    <property name="logpattern" value="{&quot;date&quot;:&quot;%date{yyyy-MM-dd&apos;T&apos;HH:mm:ss.SSS}&quot;,&quot;level&quot;:&quot;%level&quot;,&quot;appName&quot;:&quot;${appName}&quot;,&quot;class&quot;:&quot;%logger&quot;,&quot;method&quot;:&quot;%method&quot;,&quot;line&quot;:&quot;%line&quot;,&quot;message&quot;:&quot;%replace(%msg){&apos;&quot;&apos;, &apos;`&apos;} %ex&quot;}%n" />
+
+    <appender name="default" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logHome}/default.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <MaxHistory>3</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logpattern}</pattern>
+            <immediateFlush>true</immediateFlush>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${logpattern}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+    
+    <!--log4jdbc -->
+    <logger name="jdbc.sqltiming" level="INFO"/>
+
+    <!-- Turn off third party chatter -->
+    <logger name="org.springframework" level="WARN" />
+    <logger name="org.hibernate" level="WARN" />
+
+    <!-- root -->
+    <root level="${logLevel}">
+        <appender-ref ref="default" />
+        <appender-ref ref="console" />
+    </root>
+
+</configuration>

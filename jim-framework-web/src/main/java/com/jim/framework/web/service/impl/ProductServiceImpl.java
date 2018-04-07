@@ -40,12 +40,15 @@ public class ProductServiceImpl extends BaseService implements ProductService, R
         }
     }
 
-    @Cacheable(value = {"Product#5#2"},key ="#id")
+    @Cacheable(value = "Product",key ="#id")
     @RequestLockable(key = {"#id"})
     @Override
     public Product getById(Long id) {
         this.logger.info("get product from db,id:{}",id);
-        return this.productMapper.selectByPrimaryKey(id);
+        //return this.productMapper.selectByPrimaryKey(id);
+        Product product=new Product();
+        product.setId(id);
+        return product;
     }
 
     @Override

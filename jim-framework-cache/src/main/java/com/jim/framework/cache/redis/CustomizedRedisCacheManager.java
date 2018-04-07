@@ -1,13 +1,16 @@
 package com.jim.framework.cache.redis;
 
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisOperations;
 
-import java.util.Collection;
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 自定义的redis缓存管理器
@@ -17,78 +20,55 @@ import java.util.Collection;
  */
 public class CustomizedRedisCacheManager extends RedisCacheManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(CustomizedRedisCacheManager.class);
+    private RedisCacheWriter redisCacheWriter;
+    private RedisCacheConfiguration defaultRedisCacheConfiguration;
+    private RedisOperations redisOperations;
 
-    /**
-     * 缓存参数的分隔符
-     * 数组元素0=缓存的名称
-     * 数组元素1=缓存过期时间TTL
-     * 数组元素2=缓存在多少秒开始主动失效来强制刷新
-     */
-    private String separator = "#";
+    public CustomizedRedisCacheManager(
+            RedisConnectionFactory connectionFactory,
+            RedisOperations redisOperations,
+            List<CacheItemConfig> cacheItemConfigList) {
 
-    /**
-     * 缓存主动在失效前强制刷新缓存的时间
-     * 单位：秒
-     */
-    private long preloadSecondTime=0;
-
-    public long getPreloadSecondTime() {
-        return preloadSecondTime;
-    }
-
-    public void setPreloadSecondTime(long preloadSecondTime) {
-        this.preloadSecondTime = preloadSecondTime;
-    }
-
-    public String getSeparator() {
-        return separator;
-    }
-
-    public void setSeparator(String separator) {
-        this.separator = separator;
-    }
-
-    public CustomizedRedisCacheManager(RedisOperations redisOperations) {
-        super(redisOperations);
+        this(
+                RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory),
+                RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(30)),
+                cacheItemConfigList
+                        .stream()
+                        .collect(Collectors.toMap(CacheItemConfig::getName,cacheItemConfig -> {
+                            RedisCacheConfiguration cacheConfiguration =
+                                    RedisCacheConfiguration
+                                            .defaultCacheConfig()
+                                            .entryTtl(Duration.ofSeconds(cacheItemConfig.getExpiryTimeSecond()))
+                                            .prefixKeysWith(cacheItemConfig.getName());
+                            return cacheConfiguration;
+                        }))
+        );
+        this.redisOperations=redisOperations;
+        CacheContainer.init(cacheItemConfigList);
 
     }
-
-    public CustomizedRedisCacheManager(RedisOperations redisOperations, Collection<String> cacheNames) {
-        super(redisOperations, cacheNames);
+    public CustomizedRedisCacheManager(
+            RedisCacheWriter redisCacheWriter
+            ,RedisCacheConfiguration redisCacheConfiguration,
+            Map<String, RedisCacheConfiguration> redisCacheConfigurationMap) {
+        super(redisCacheWriter,redisCacheConfiguration,redisCacheConfigurationMap);
+        this.redisCacheWriter=redisCacheWriter;
+        this.defaultRedisCacheConfiguration=redisCacheConfiguration;
     }
 
     @Override
     public Cache getCache(String name) {
 
-        String[] cacheParams=name.split(this.getSeparator());
-        String cacheName = cacheParams[0];
-
-        if(StringUtils.isBlank(cacheName)){
-            return null;
-        }
-
-        Long expirationSecondTime = this.computeExpiration(cacheName);
-
-        if(cacheParams.length>1) {
-            expirationSecondTime=Long.parseLong(cacheParams[1]);
-            this.setDefaultExpiration(expirationSecondTime);
-        }
-        if(cacheParams.length>2) {
-            this.setPreloadSecondTime(Long.parseLong(cacheParams[2]));
-        }
-
-        Cache cache = super.getCache(cacheName);
+        Cache cache = super.getCache(name);
         if(null==cache){
             return cache;
         }
-        logger.info("expirationSecondTime:"+expirationSecondTime);
         CustomizedRedisCache redisCache= new CustomizedRedisCache(
-                cacheName,
-                (this.isUsePrefix() ? this.getCachePrefix().prefix(cacheName) : null),
-                this.getRedisOperations(),
-                expirationSecondTime,
-                preloadSecondTime);
+                name,
+                this.redisCacheWriter,
+                this.defaultRedisCacheConfiguration,
+                this.redisOperations
+        );
         return redisCache;
 
     }

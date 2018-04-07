@@ -1,8 +1,9 @@
 package com.jim.framework.web.dao.generated.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-public class Product {
+public class Product implements Serializable {
     @Id
     private Long id;
 
