@@ -1,0 +1,1 @@
+com.jim.framework.rpc.filter.AccessLimitService=com.jim.framework.rpc.consumer.service.impl.AccessLimitServiceImpl
