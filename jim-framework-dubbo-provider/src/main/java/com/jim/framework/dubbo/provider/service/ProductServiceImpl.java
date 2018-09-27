@@ -5,6 +5,7 @@ import com.jim.framework.dubbo.core.model.Product;
 import com.jim.framework.dubbo.core.service.CommentService;
 import com.jim.framework.dubbo.core.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 * 创建日期：2017/4/13
 * 修改日期:2017/4/13
 */
+@Service
 public class ProductServiceImpl implements ProductService {
 
     @Autowired

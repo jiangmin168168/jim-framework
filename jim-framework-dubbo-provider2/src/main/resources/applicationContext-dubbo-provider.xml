@@ -14,7 +14,8 @@
 
 	<dubbo:protocol name="dubbo" accesslog="true" port="${server.port}"/>
 
-	<dubbo:registry address="N/A" />
+	<!--<dubbo:registry address="N/A" />-->
+	<dubbo:registry address="127.0.0.1:2181" protocol="zookeeper" />
 	<dubbo:service interface="com.jim.framework.dubbo.core.service.CommentService" ref="commentService"/>
 
 	<bean id="commentService"
