@@ -9,16 +9,18 @@ import zipkin2.reporter.kafka11.KafkaSender;
  */
 public class KafkaZipkinCollectorConfiguration extends AbstractZipkinCollectorConfiguration {
 
-    private String topic;
-
     public KafkaZipkinCollectorConfiguration(String serviceName,String zipkinUrl,String topic) {
-        super(serviceName,zipkinUrl);
-        this.topic=topic;
+        super(serviceName,zipkinUrl,topic);
     }
 
     @Override
     public Sender getSender() {
 
-        return KafkaSender.newBuilder().bootstrapServers(super.getZipkinUrl()).topic(this.topic).encoding(Encoding.JSON).build();
+        return KafkaSender
+                .newBuilder()
+                .bootstrapServers(super.getZipkinUrl())
+                .topic(super.getTopic())
+                .encoding(Encoding.JSON)
+                .build();
     }
 }

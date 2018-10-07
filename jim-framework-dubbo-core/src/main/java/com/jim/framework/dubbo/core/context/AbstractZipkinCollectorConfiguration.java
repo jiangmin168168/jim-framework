@@ -24,13 +24,24 @@ public abstract class AbstractZipkinCollectorConfiguration {
 
     private String serviceName;
 
+    private String topic;
+
+    public String getTopic() {
+        return topic;
+    }
+
+    protected void setTopic(String topic) {
+        this.topic = topic;
+    }
+
     protected String getZipkinUrl() {
         return zipkinUrl;
     }
 
-    public AbstractZipkinCollectorConfiguration(String serviceName,String zipkinUrl){
+    public AbstractZipkinCollectorConfiguration(String serviceName,String zipkinUrl,String topic){
         this.zipkinUrl=zipkinUrl;
         this.serviceName=serviceName;
+        this.topic=topic;
         this.tracing=this.tracing();
     }
 
@@ -44,10 +55,12 @@ public abstract class AbstractZipkinCollectorConfiguration {
     }
 
     protected Tracing tracing() {
-        this.tracing= Tracing.newBuilder()
+        this.tracing= Tracing
+                .newBuilder()
                 .localServiceName(this.serviceName)
                 .sampler(Sampler.ALWAYS_SAMPLE)
-                .spanReporter(spanReporter()).build();
+                .spanReporter(spanReporter())
+                .build();
         return this.tracing;
     }
 

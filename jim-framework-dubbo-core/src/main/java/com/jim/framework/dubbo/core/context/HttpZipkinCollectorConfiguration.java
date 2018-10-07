@@ -6,7 +6,7 @@ import zipkin2.reporter.okhttp3.OkHttpSender;
 public class HttpZipkinCollectorConfiguration extends AbstractZipkinCollectorConfiguration {
 
     public HttpZipkinCollectorConfiguration(String serviceName,String zipkinUrl) {
-        super(serviceName,zipkinUrl);
+        super(serviceName,zipkinUrl,null);
     }
 
     @Override
