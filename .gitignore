@@ -27,3 +27,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+### other
+.mvn/
+*.swp
