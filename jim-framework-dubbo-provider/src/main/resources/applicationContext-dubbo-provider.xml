@@ -12,10 +12,10 @@
 	<dubbo:application name="${spring.application.name}" owner="jim" logger="slf4j"/>
 	<dubbo:provider filter="traceProviderFilter" />
 
-	<dubbo:protocol name="dubbo" accesslog="true" port="${server.port}"/>
+	<dubbo:protocol name="dubbo" accesslog="true" port="${server.port}" dispatcher="message"/>
 
-	<dubbo:registry address="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183" client="curator" protocol="zookeeper" />
-	<!--<dubbo:registry address="127.0.0.1:2184" protocol="zookeeper" />-->
+	<!--<dubbo:registry address="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183" client="curator" protocol="zookeeper" />-->
+	<dubbo:registry address="127.0.0.1:2181" protocol="zookeeper" />
 	<dubbo:service interface="com.jim.framework.dubbo.core.service.ProductService" ref="productService"/>
 
 	<bean id="productService"

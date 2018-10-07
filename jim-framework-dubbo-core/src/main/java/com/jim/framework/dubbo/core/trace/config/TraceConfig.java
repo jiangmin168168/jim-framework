@@ -25,6 +25,10 @@ public class TraceConfig {
 
     private String zipkinUrl;
 
+    private String zipkinKafkaTopic;
+
+    private String zipkinSendType="http";
+
     @Value("${server.port}")
     private int serverPort;
 
@@ -85,5 +89,21 @@ public class TraceConfig {
 
     public void setZipkinUrl(String zipkinUrl) {
         this.zipkinUrl = zipkinUrl;
+    }
+
+    public String getZipkinKafkaTopic() {
+        return zipkinKafkaTopic;
+    }
+
+    public void setZipkinKafkaTopic(String zipkinKafkaTopic) {
+        this.zipkinKafkaTopic = zipkinKafkaTopic;
+    }
+
+    public String getZipkinSendType() {
+        return zipkinSendType;
+    }
+
+    public void setZipkinSendType(String zipkinSendType) {
+        this.zipkinSendType = zipkinSendType;
     }
 }

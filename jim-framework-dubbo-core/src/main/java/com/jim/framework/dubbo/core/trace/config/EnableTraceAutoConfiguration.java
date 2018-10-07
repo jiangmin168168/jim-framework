@@ -1,7 +1,7 @@
 package com.jim.framework.dubbo.core.trace.config;
 
 import com.jim.framework.dubbo.core.annotation.EnableTraceAutoConfigurationProperties;
-import com.jim.framework.dubbo.core.context.TraceContext;
+import com.jim.framework.dubbo.core.context.RpcTraceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -29,6 +29,6 @@ public class EnableTraceAutoConfiguration {
 
     @PostConstruct
     public void init() throws Exception {
-        TraceContext.init(this.traceConfig);
+        RpcTraceContext.init(this.traceConfig);
     }
 }

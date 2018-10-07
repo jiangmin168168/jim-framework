@@ -7,12 +7,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
 
 import java.util.concurrent.CountDownLatch;
 
 @SpringBootApplication
 @EnableTraceAutoConfigurationProperties
+@ComponentScan(basePackages = {"com.jim.framework.dubbo.core"})
 @ImportResource({"classpath:applicationContext-dubbo-consumer.xml","classpath:applicationContext-dubbo-provider.xml"})
 public class DubboProviderApplication {
 
