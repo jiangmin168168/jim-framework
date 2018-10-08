@@ -30,10 +30,6 @@ public abstract class AbstractZipkinCollectorConfiguration {
         return topic;
     }
 
-    protected void setTopic(String topic) {
-        this.topic = topic;
-    }
-
     protected String getZipkinUrl() {
         return zipkinUrl;
     }

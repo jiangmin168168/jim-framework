@@ -4,13 +4,18 @@ import brave.Span;
 import brave.Tracer;
 import brave.propagation.TraceContext;
 import com.alibaba.dubbo.common.extension.Activate;
+import com.alibaba.dubbo.remoting.exchange.ResponseCallback;
 import com.alibaba.dubbo.rpc.*;
+import com.alibaba.dubbo.rpc.protocol.dubbo.FutureAdapter;
+import com.alibaba.dubbo.rpc.support.RpcUtils;
 import com.jim.framework.dubbo.core.context.RpcTraceContext;
 import com.jim.framework.dubbo.core.context.ZipkinCollectorConfigurationFactory;
 import com.jim.framework.dubbo.core.utils.IdUtils;
 import com.jim.framework.dubbo.core.utils.SpringContextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.Future;
 
 /*
 * 消费端日志过滤器
@@ -30,7 +35,8 @@ public class TraceConsumerFilter implements Filter {
             return invoker.invoke(invocation);
         }
 
-        ZipkinCollectorConfigurationFactory zipkinCollectorConfigurationFactory=SpringContextUtils.getApplicationContext().getBean(ZipkinCollectorConfigurationFactory.class);
+        ZipkinCollectorConfigurationFactory zipkinCollectorConfigurationFactory=
+                SpringContextUtils.getApplicationContext().getBean(ZipkinCollectorConfigurationFactory.class);
         Tracer tracer= zipkinCollectorConfigurationFactory.getTracing().tracer();
 
         if(null==RpcTraceContext.getTraceId()){
@@ -59,10 +65,47 @@ public class TraceConsumerFilter implements Filter {
                 span.context().parentId(),
                 span.context().spanId());
 
-        Result result = invoker.invoke(invocation);
+        RpcContext rpcContext = RpcContext.getContext();
+        boolean isAsync=false;
+        Future<Object> future = rpcContext.getFuture();
+        if (future instanceof FutureAdapter) {
+            isAsync = true;
+            ((FutureAdapter) future).getFuture().setCallback(new AsyncSpanCallback(span));
+        }
 
-        span.finish();
+        Result result = null;
+        boolean isOneway = RpcUtils.isOneway(invoker.getUrl(), invocation);
+        try {
+            result = invoker.invoke(invocation);
+        }
+        finally {
+            if(isOneway) {
+                span.flush();
+            }
+            else if(!isAsync) {
+                span.finish();
+            }
+        }
 
         return result;
+    }
+
+    private class AsyncSpanCallback implements ResponseCallback{
+
+        private Span span;
+
+        public AsyncSpanCallback(Span span){
+            this.span=span;
+        }
+
+        @Override
+        public void done(Object o) {
+            span.finish();
+        }
+
+        @Override
+        public void caught(Throwable throwable) {
+            span.finish();
+        }
     }
 }

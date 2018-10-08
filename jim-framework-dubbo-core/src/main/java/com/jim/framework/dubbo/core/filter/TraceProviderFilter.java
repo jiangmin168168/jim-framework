@@ -47,7 +47,8 @@ public class TraceProviderFilter implements Filter {
         RpcTraceContext.setParentId(spanId);
         RpcTraceContext.setSpanId(IdUtils.get());
 
-        ZipkinCollectorConfigurationFactory zipkinCollectorConfigurationFactory=SpringContextUtils.getApplicationContext().getBean(ZipkinCollectorConfigurationFactory.class);
+        ZipkinCollectorConfigurationFactory zipkinCollectorConfigurationFactory=
+                SpringContextUtils.getApplicationContext().getBean(ZipkinCollectorConfigurationFactory.class);
         Tracer tracer= zipkinCollectorConfigurationFactory.getTracing().tracer();
 
         TraceContext traceContext= TraceContext.newBuilder()
@@ -63,9 +64,13 @@ public class TraceProviderFilter implements Filter {
                 span.context().parentId(),
                 span.context().spanId());
 
-        Result result = invoker.invoke(invocation);
-
-        span.finish();
+        Result result = null;
+        try {
+            result = invoker.invoke(invocation);
+        }
+        finally {
+            span.finish();
+        }
 
         return result;
 
