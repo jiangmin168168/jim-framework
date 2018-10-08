@@ -15,7 +15,10 @@
 + [变通实现微服务的per request以提高IO效率2](http://www.cnblogs.com/ASPNET2008/p/6107034.html)
 + [变通实现微服务的per request以提高IO效率3](http://www.cnblogs.com/ASPNET2008/p/6125795.html)
 
-#### [分布式调用链追踪:dubbo+zipkin](http://www.cnblogs.com/ASPNET2008/p/6709900.html)
+### 分布式调用链追踪
+
++ [dubbo+zipkin调用链监控](http://www.cnblogs.com/ASPNET2008/p/6709900.html)
++ [dubbo+zipkin调用链监控(二)](https://www.cnblogs.com/ASPNET2008/p/9757980.html)
 
 ### 自定义RPC框架:netty+consul
 + [简易RPC框架-学习使用](http://www.cnblogs.com/ASPNET2008/p/6859211.html)
